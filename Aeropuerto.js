@@ -29,7 +29,7 @@ class Aeropuerto {
 
    async notificar(horaActual){
         let unaNot= new Notificacion(horaActual);
-        await unaNot.save();
+        //await unaNot.save();
         this.enviarMail(horaActual)
     }
     

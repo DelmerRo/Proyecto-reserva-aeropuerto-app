@@ -10,7 +10,6 @@ class PasajeroGeneral extends Pasajero {
     }
 
     esNotificable(horaActual){
-        console.log(this.horaDeVuelo - horaActual)
         return  horaActual - this.horaDeVuelo  === 1;
     }
 }
