@@ -4,10 +4,10 @@ const cors = require("cors");
 const dbConnect = require('./config/mongo');
 const app = express();
 
-const Supermercado = require("./Supermercado");
+const Aeropuerto = require("./Aeropuerto");
 
-const supermercado = new Supermercado({
-    name: "Supermercado Delmer"
+const aeropuerto = new Aeropuerto({
+    name: "Aeropuerto"
 });
 
 
@@ -17,7 +17,7 @@ app.use(express.json()) // prepara para que pueda recibir JSON
 const port = process.env.PORT || 3000
 
 app.use((req, res, next) => {
-    res.locals.supermercado = supermercado;
+    res.locals.aeropuerto = aeropuerto;
     next();
 });
 

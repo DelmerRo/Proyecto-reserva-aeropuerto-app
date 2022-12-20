@@ -1,13 +1,12 @@
-
-const ProductoFruta = require('../models/ProductoFruta')
-const ProductoFactory = require('../factories/producto_factory')
+const PasajeroGeneral = require('../models/PasajeroGeneral')
+const PasajeroFactory = require('../factories/pasajero_factory')
 /**obtener lista de la base de datos!*/
 
 
-const getItems = async (req, res) => {
+const getPasajeros = async (req, res) => {
     try {;
-        const frutas = await res.locals.supermercado.listaDeProductosFrutas();
-        res.status(200).json({ status: 200,  productoFrutas: frutas });
+        const pasajeros = await res.locals.aeropuerto.listaDePasajerosGenerales();
+        res.status(200).json({ status: 200,  pasajeros: pasajeros });
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -19,7 +18,7 @@ const getItem = async (req, res) => {
     let id = query.id;
     if (id) {
         try {
-            const unProducto = await res.locals.supermercado.buscarUno(id);
+            const unProducto = await res.locals.aeropuerto.buscarUno(id);
             res.status(200).json({ status: 200, Producto: unProducto });
 
         } catch (err) {
@@ -37,7 +36,7 @@ const getEnRango = async (req, res) => {
     let max = query.max;
     if (min && max) {
         try {
-            const listaDeProductoFrutas = await res.locals.supermercado.getfrutaEnRangoPrecio(min, max);
+            const listaDeProductoFrutas = await res.locals.aeropuerto.getfrutaEnRangoPrecio(min, max);
             res.status(200).json({
                 status: 200, getfrutaEnRangoPrecio: listaDeProductoFrutas,
             });
@@ -51,14 +50,14 @@ const getEnRango = async (req, res) => {
 }
 
 /*  insertar un registro*/
-const createItem = async (req, res) => {
+const crearPasajeros = async (req, res) => {
 
-    const { nombre, precio, tipo } = req.body;
-    let newProducto = null;
+    const { nombreApellido, pasaporte, fechaDeNacimiento, horaDeVuelo,tipo } = req.body;
+    let newPasajero = null;
     try {
-        newProducto = await new ProductoFactory().crear(nombre, precio, tipo);
-        const unProducto = await res.locals.supermercado.agregarProducto(res, newProducto)
-        res.status(200).json({ status: 200, temperaturas: unProducto });
+        newPasajero = await new PasajeroFactory().crear(nombreApellido, pasaporte, fechaDeNacimiento, horaDeVuelo,tipo );
+        const unPasajero = await res.locals.aeropuerto.agregarPasajero(res, newPasajero)
+        res.status(200).json({ status: 200, Pasajero: unPasajero });
     } catch (err) {
         res.status(500).json({ message: err.message, status: 500 })
     }
@@ -69,7 +68,7 @@ const createItem = async (req, res) => {
 
 const updateItem = async (req, res) => {
     try {
-        await res.locals.supermercado.actualizarFruta(req.params.id, req.body)
+        await res.locals.aeropuerto.actualizarFruta(req.params.id, req.body)
         res.status(200).json({ status: 200, productoFruta: req.body });
     } catch (e) {
         res.status(500).json({ message: e.message })
@@ -81,11 +80,11 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
     let id = req.params.id;
     try {
-        await res.locals.supermercado.eliminarFruta(id)
+        await res.locals.aeropuerto.eliminarFruta(id)
         res.status(200).json({ status: 200, idProductoEliminado: id });
     } catch (e) {
         res.status(500).json({ message: e.message })
     }
 }
 
-module.exports = { getItems, getItem, getEnRango, createItem, updateItem, deleteItem }
+module.exports = { getPasajeros,crearPasajeros}
